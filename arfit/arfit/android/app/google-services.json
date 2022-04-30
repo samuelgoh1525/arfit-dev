@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "669903803430",
+    "project_id": "arfit-5a52f",
+    "storage_bucket": "arfit-5a52f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669903803430:android:3bcd35d3e34658abe682e7",
+        "android_client_info": {
+          "package_name": "com.example.arfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669903803430-q4c594e4vce71bgo84cpter34jov1ovb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsEmupYc7rfj_LdirHUxtr1bPw0aEb0eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669903803430-q4c594e4vce71bgo84cpter34jov1ovb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
