@@ -33,19 +33,19 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              "SIGN UP",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
+            // Text(
+            //   "SIGN UP",
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 20,
+            //   ),
+            // ),
             SizedBox(height: size.height * 0.03),
             SvgPicture.asset(
-              "assets/icons/signup.svg",
+              "assets/icons/signup-fitness.svg",
               height: size.height * 0.35,
             ),
-            SizedBox(height: size.height * 0.03),
+            // SizedBox(height: size.height * 0.03),
             RoundedInputField(
               textController: emailController,
               hintText: "Your Email",

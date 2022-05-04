@@ -21,21 +21,21 @@ class Body extends StatelessWidget {
         children: <Widget>[
           SizedBox(width: double.infinity),
           Text(
-            "WELCOME TO ARFIT",
+            "JOIN THE FITNESS MOVEMENT",
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
           SizedBox(
-            height: size.height * 0.04,
+            height: size.height * 0.05,
           ),
-          SvgPicture.asset(
-            "assets/icons/chat.svg",
-            height: size.height * 0.45,
+          Image.asset(
+            "assets/images/logo.png",
+            height: size.height * 0.3,
           ),
           SizedBox(
-            height: size.height * 0.04,
+            height: size.height * 0.05,
           ),
           RoundedButton(
             text: "LOGIN",
@@ -52,7 +52,7 @@ class Body extends StatelessWidget {
           ),
           RoundedButton(
             text: "SIGN UP",
-            color: kPrimaryLightColor,
+            color: kSuccessLightColor,
             textColor: Colors.black,
             press: () {
               Navigator.push(

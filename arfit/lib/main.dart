@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: kPrimaryColor,
           scaffoldBackgroundColor: Colors.white,
+          fontFamily: 'Futura Heavy',
         ),
         home: const AuthenticationWrapper(),
       ),
