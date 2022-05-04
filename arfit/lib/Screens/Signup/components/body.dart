@@ -87,24 +87,24 @@ class Body extends StatelessWidget {
                 );
               },
             ),
-            OrDivider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SocialIcon(
-                  iconSrc: "assets/icons/facebook.svg",
-                  press: () {},
-                ),
-                SocialIcon(
-                  iconSrc: "assets/icons/twitter.svg",
-                  press: () {},
-                ),
-                SocialIcon(
-                  iconSrc: "assets/icons/google-plus.svg",
-                  press: () {},
-                ),
-              ],
-            ),
+            // OrDivider(),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     SocialIcon(
+            //       iconSrc: "assets/icons/facebook.svg",
+            //       press: () {},
+            //     ),
+            //     SocialIcon(
+            //       iconSrc: "assets/icons/twitter.svg",
+            //       press: () {},
+            //     ),
+            //     SocialIcon(
+            //       iconSrc: "assets/icons/google-plus.svg",
+            //       press: () {},
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
