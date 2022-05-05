@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:arfit/queries.dart';
 
 class Body extends StatelessWidget {
   final Widget child;
@@ -21,6 +22,7 @@ class Body extends StatelessWidget {
     required this.child,
   }) : super(key: key);
 
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -29,18 +31,6 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    Future<void> addUser() {
-      // Call the user's CollectionReference to add a new user
-      return users
-          .add({
-            'name': "testing123", // John Doe
-            'acceptedChallenges': [], // Stokes and Sons
-            'id': "idtesting123" // 42
-          })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
-    }
 
     return Background(
       child: SingleChildScrollView(
@@ -54,16 +44,22 @@ class Body extends StatelessWidget {
             //     fontSize: 20,
             //   ),
             // ),
-            SizedBox(height: size.height * 0.03),
+            // SizedBox(height: size.height * 0.01),
             SvgPicture.asset(
               "assets/icons/signup-fitness.svg",
               height: size.height * 0.35,
             ),
             // SizedBox(height: size.height * 0.03),
             RoundedInputField(
+              textController: usernameController,
+              hintText: "Your Username",
+              icon: Icons.person,
+              onChanged: (value) {},
+            ),
+            RoundedInputField(
               textController: emailController,
               hintText: "Your Email",
-              icon: Icons.person,
+              icon: Icons.mail,
               onChanged: (value) {},
             ),
             RoundedPasswordField(
@@ -78,7 +74,11 @@ class Body extends StatelessWidget {
                       password: passwordController.text.trim(),
                     );
 
-                addUser();
+                Queries.addUser(
+                  users,
+                  usernameController.text.trim(),
+                  emailController.text.trim(),
+                );
 
                 Navigator.push(
                   context,
