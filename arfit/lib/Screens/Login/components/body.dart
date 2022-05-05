@@ -4,6 +4,7 @@
 import 'package:arfit/Screens/Login/components/background.dart';
 import 'package:arfit/Screens/Signup/signup_screen.dart';
 import 'package:arfit/authentication_service.dart';
+import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/already_have_an_account_check.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/components/rounded_input_field.dart';
@@ -58,18 +59,52 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "LOGIN",
               press: () {
-                context.read<AuthenticationService>().signIn(
+                context
+                    .read<AuthenticationService>()
+                    .signIn(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
-                    );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AuthenticationWrapper();
-                    },
-                  ),
-                );
+                    )
+                    .then((value) => value == "Signed in"
+                        ? Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return AuthenticationWrapper();
+                              },
+                            ),
+                          )
+                        : showDialog(
+                            context: context,
+                            builder: (_) => AlertWidget(
+                              title: value ?? "",
+                              caption: "",
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text("Ok"),
+                                ),
+                              ],
+                            ),
+                          ))
+                    .catchError((error) => showDialog(
+                          context: context,
+                          builder: (_) => AlertWidget(
+                            title: error,
+                            caption: "",
+                            actions: [],
+                          ),
+                        ));
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) {
+                //       return AuthenticationWrapper();
+                //     },
+                //   ),
+                // );
               },
             ),
             SizedBox(

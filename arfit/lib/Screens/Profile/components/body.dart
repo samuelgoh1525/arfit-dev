@@ -5,6 +5,8 @@ import 'package:arfit/authentication_service.dart';
 import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,14 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Total height and width of screen
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final String? userEmail = auth.currentUser?.email;
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    // users.doc(documentId).get();
+
     return Background(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
