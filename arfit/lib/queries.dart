@@ -8,17 +8,29 @@ class Queries{
   Future<void> addUser(String fullName, String email) {
     // Call the user's CollectionReference to add a new user
     return users
-        .add({
-          'name': fullName,
-          'email': email,
-          'acceptedChallenges':[]
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
+      .doc(email)
+      .set({
+        'name': fullName,
+        'acceptedChallenges':[]
+      })
+      .then((value) => print("User Added"))
+      .catchError((error) => print("Failed to add user: $error"));
   }
-  Future<void> addUserChallenge(String userChallengeId, String challengeId, int goal, int reps, String friend, bool sent, bool accepted) {
+
+  static addAcceptedChallenge(CollectionReference users, String challengeId, String email) {
     // Call the user's CollectionReference to add a new user
     return users
+      .doc(email)
+      .update({
+        'acceptedChallenges': FieldValue.arrayUnion([challengeId])
+      })
+      .then((value) => print("User Added"))
+      .catchError((error) => print("Failed to add user: $error"));
+  }
+  CollectionReference userChallenges = FirebaseFirestore.instance.collection('userChallenges');
+  Future<void> addUserChallenge(String userChallengeId, String challengeId, int goal, int reps, String friend, bool sent, bool accepted) {
+    // Call the user's CollectionReference to add a new user
+    return userChallenges
         .add({
           'challengeId': challengeId,
           'goal':goal,
