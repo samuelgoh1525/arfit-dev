@@ -76,31 +76,66 @@ class Body extends StatelessWidget {
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     )
-                    .then((_) => AlertWidget(
-                          title: "Successfully created account!",
-                          caption: "",
-                          actions: [],
+                    .then((value) => showDialog(
+                          context: context,
+                          builder: (_) => AlertWidget(
+                            title: value ?? "",
+                            caption: "",
+                            actions: value == "Signed up"
+                                ? [
+                                    TextButton(
+                                      onPressed: () {
+                                        Queries.addUser(
+                                          users,
+                                          usernameController.text.trim(),
+                                          emailController.text.trim(),
+                                        );
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return AuthenticationWrapper();
+                                            },
+                                          ),
+                                        );
+                                      },
+                                      child: Text("Ok"),
+                                    ),
+                                  ]
+                                : [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Ok"),
+                                    ),
+                                  ],
+                          ),
                         ))
-                    .catchError((error) => AlertWidget(
-                          title: "Error creating account",
-                          caption: error,
-                          actions: [],
+                    .catchError((error) => showDialog(
+                          context: context,
+                          builder: (_) => AlertWidget(
+                            title: error,
+                            caption: "",
+                            actions: [],
+                          ),
                         ));
 
-                Queries.addUser(
-                  users,
-                  usernameController.text.trim(),
-                  emailController.text.trim(),
-                );
+                // Queries.addUser(
+                //   users,
+                //   usernameController.text.trim(),
+                //   emailController.text.trim(),
+                // );
 
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AuthenticationWrapper();
-                    },
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) {
+                //       return AuthenticationWrapper();
+                //     },
+                //   ),
+                // );
               },
             ),
             SizedBox(height: size.height * 0.03),
