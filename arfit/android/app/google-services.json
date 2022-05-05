@@ -29,6 +29,13 @@
             {
               "client_id": "669903803430-q4c594e4vce71bgo84cpter34jov1ovb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "669903803430-hbsskoefdk2qhl52qi1thkhc7e69ob5m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.arfit"
+              }
             }
           ]
         }

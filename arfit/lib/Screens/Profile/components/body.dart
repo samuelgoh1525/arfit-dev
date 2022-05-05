@@ -30,8 +30,8 @@ class Body extends StatelessWidget {
             height: size.height * 0.04,
           ),
           SvgPicture.asset(
-            "assets/icons/chat.svg",
-            height: size.height * 0.45,
+            "assets/icons/signup-fitness.svg",
+            height: size.height * 0.4,
           ),
           SizedBox(
             height: size.height * 0.03,
@@ -50,6 +50,32 @@ class Body extends StatelessWidget {
               );
             },
           ),
+          RoundedButton(
+            text: "Try this",
+            press: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text("Accept?"),
+                  content: Text("Do you accept?"),
+                  actions: [
+                    TextButton(
+                      onPressed: () {},
+                      child: Text("Accept"),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text("Reject"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          // AlertDialog(
+          //   title: Text("Accept?"),
+          //   content: Text("Do you accept?"),
+          // ),
         ],
       ),
     );
