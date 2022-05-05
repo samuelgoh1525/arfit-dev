@@ -2,6 +2,7 @@
 
 import 'package:arfit/Screens/Profile/components/background.dart';
 import 'package:arfit/authentication_service.dart';
+import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/main.dart';
 import 'package:flutter/material.dart';
@@ -55,20 +56,19 @@ class Body extends StatelessWidget {
             press: () {
               showDialog(
                 context: context,
-                builder: (_) => AlertDialog(
-                  title: Text("Accept?"),
-                  content: Text("Do you accept?"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Accept"),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text("Reject"),
-                    ),
-                  ],
-                ),
+                builder: (_) => AlertWidget(
+                    title: "Testing New Alert",
+                    caption: "Does this work?",
+                    actions: [
+                      TextButton(
+                        onPressed: () {},
+                        child: Text("Accept"),
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text("Reject"),
+                      ),
+                    ]),
               );
             },
           ),

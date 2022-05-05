@@ -4,6 +4,7 @@
 import 'package:arfit/Screens/Login/login_screen.dart';
 import 'package:arfit/Screens/Signup/components/background.dart';
 import 'package:arfit/authentication_service.dart';
+import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/already_have_an_account_check.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/components/rounded_input_field.dart';
@@ -69,10 +70,22 @@ class Body extends StatelessWidget {
             RoundedButton(
               text: "SIGN UP",
               press: () {
-                context.read<AuthenticationService>().signUp(
+                context
+                    .read<AuthenticationService>()
+                    .signUp(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
-                    );
+                    )
+                    .then((_) => AlertWidget(
+                          title: "Successfully created account!",
+                          caption: "",
+                          actions: [],
+                        ))
+                    .catchError((error) => AlertWidget(
+                          title: "Error creating account",
+                          caption: error,
+                          actions: [],
+                        ));
 
                 Queries.addUser(
                   users,
