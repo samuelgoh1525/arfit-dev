@@ -21,6 +21,7 @@ class Body extends StatelessWidget {
     required this.child,
   }) : super(key: key);
 
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -33,10 +34,10 @@ class Body extends StatelessWidget {
     Future<void> addUser() {
       // Call the user's CollectionReference to add a new user
       return users
-          .add({
-            'name': "testing123", // John Doe
-            'acceptedChallenges': [], // Stokes and Sons
-            'id': "idtesting123" // 42
+          .doc(emailController.text.trim())
+          .set({
+            'name': usernameController.text.trim(),
+            'acceptedChallenges': [],
           })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
@@ -54,16 +55,22 @@ class Body extends StatelessWidget {
             //     fontSize: 20,
             //   ),
             // ),
-            SizedBox(height: size.height * 0.03),
+            // SizedBox(height: size.height * 0.01),
             SvgPicture.asset(
               "assets/icons/signup-fitness.svg",
               height: size.height * 0.35,
             ),
             // SizedBox(height: size.height * 0.03),
             RoundedInputField(
+              textController: usernameController,
+              hintText: "Your Username",
+              icon: Icons.person,
+              onChanged: (value) {},
+            ),
+            RoundedInputField(
               textController: emailController,
               hintText: "Your Email",
-              icon: Icons.person,
+              icon: Icons.mail,
               onChanged: (value) {},
             ),
             RoundedPasswordField(
@@ -71,7 +78,7 @@ class Body extends StatelessWidget {
               onChanged: (value) {},
             ),
             RoundedButton(
-              text: "SIGN UP",
+              text: "SIGN UP!",
               press: () {
                 context.read<AuthenticationService>().signUp(
                       email: emailController.text.trim(),
