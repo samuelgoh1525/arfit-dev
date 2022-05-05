@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:arfit/queries.dart';
 
 class Body extends StatelessWidget {
   final Widget child;
@@ -30,18 +31,6 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-    Future<void> addUser() {
-      // Call the user's CollectionReference to add a new user
-      return users
-          .doc(emailController.text.trim())
-          .set({
-            'name': usernameController.text.trim(),
-            'acceptedChallenges': [],
-          })
-          .then((value) => print("User Added"))
-          .catchError((error) => print("Failed to add user: $error"));
-    }
 
     return Background(
       child: SingleChildScrollView(
@@ -78,14 +67,18 @@ class Body extends StatelessWidget {
               onChanged: (value) {},
             ),
             RoundedButton(
-              text: "SIGN UP!",
+              text: "SIGN UP",
               press: () {
                 context.read<AuthenticationService>().signUp(
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
 
-                addUser();
+                Queries.addUser(
+                  users,
+                  usernameController.text.trim(),
+                  emailController.text.trim(),
+                );
 
                 Navigator.push(
                   context,
