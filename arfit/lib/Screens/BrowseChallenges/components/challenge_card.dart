@@ -8,6 +8,7 @@ class ChallengeCard extends StatelessWidget {
   final String id;
   final String name;
   final int length;
+  final int goal;
   final String description;
   final String photo;
 
@@ -18,6 +19,7 @@ class ChallengeCard extends StatelessWidget {
     required this.length,
     required this.description,
     required this.photo,
+    required this.goal,
   }) : super(key: key);
 
   @override

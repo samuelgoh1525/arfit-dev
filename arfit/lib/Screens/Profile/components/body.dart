@@ -94,7 +94,9 @@ class Body extends StatelessWidget {
                       height: size.height * 0.04,
                     ),
                     Image.network(
-                      snapshot.data['photo'],
+                      snapshot.data['photo'] != ""
+                          ? snapshot.data['photo']
+                          : "https://cdn-icons-png.flaticon.com/512/64/64572.png",
                       height: size.height * 0.2,
                     )
                   ],
