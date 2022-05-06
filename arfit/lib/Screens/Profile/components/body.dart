@@ -12,7 +12,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
 
@@ -22,10 +21,9 @@ class Body extends StatelessWidget {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
-    CollectionReference users = 
-          FirebaseFirestore.instance.collection('users');
-          CollectionReference userChallenges = 
-          FirebaseFirestore.instance.collection('userChallenges');
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference userChallenges =
+        FirebaseFirestore.instance.collection('userChallenges');
     Future<Map> getName() async {
       DocumentSnapshot userDocument = await users.doc(userEmail).get();
       return userDocument.data() as Map;
@@ -36,53 +34,54 @@ class Body extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           StreamBuilder<QuerySnapshot>(
-            stream: userChallenges.snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
+              stream: userChallenges.snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
 
-              for (DocumentSnapshot document in snapshot.data!.docs) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
-                if (data['receiver'] == userEmail &&
-                    data['accepted'] == false) {
-                  Future.delayed(Duration.zero, () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                                title: Text("You have been challenged by " +
-                                    data['sender']),
-                                content: Text("Do you accept?"),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Queries.acceptUserChallenge(
-                                          userChallenges, document.id);
-                                      Queries.addAcceptedChallenge(
-                                          users, document.id, userEmail!);
-                                          Navigator.pop(context);
-                                    },
-                                    child: Text("Accept"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      // Queries.removeUserChallenge(userChallenges, document.id);
-                                      Queries.acceptUserChallenge(
-                                          userChallenges, document.id);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("Reject"),
-                                  ),
-                                ]));
-                  });
+                for (DocumentSnapshot document in snapshot.data!.docs) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  if (data['receiver'] == userEmail &&
+                      data['accepted'] == false) {
+                    Future.delayed(Duration.zero, () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                                  title: Text("You have been challenged by " +
+                                      data['sender']),
+                                  content: Text("Do you accept?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Queries.acceptUserChallenge(
+                                            userChallenges, document.id);
+                                        Queries.addAcceptedChallenge(
+                                            users, document.id, userEmail!);
+                                        Navigator.pop(context);
+                                        Queries.addAcceptedChallenge(
+                                            users, document.id, data['sender']);
+                                      },
+                                      child: Text("Accept"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        // Queries.removeUserChallenge(userChallenges, document.id);
+                                        Queries.acceptUserChallenge(
+                                            userChallenges, document.id);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Reject"),
+                                    ),
+                                  ]));
+                    });
+                  }
                 }
-              }
-              return Text("No challenges found");
-                }
-          ),
-          
+                return Text("No challenges found");
+              }),
+
           SizedBox(width: double.infinity),
           FutureBuilder(
             future: getName(),
