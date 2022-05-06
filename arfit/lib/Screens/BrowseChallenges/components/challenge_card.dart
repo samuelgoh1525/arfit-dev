@@ -2,12 +2,16 @@
 
 import 'package:arfit/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:arfit/queries.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ChallengeCard extends StatelessWidget {
   // const ChallengeCard({Key? key}) : super(key: key);
   final String id;
   final String name;
   final int length;
+  final int goal;
   final String description;
   final String photo;
 
@@ -18,32 +22,20 @@ class ChallengeCard extends StatelessWidget {
     required this.length,
     required this.description,
     required this.photo,
+    required this.goal,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog<String>(
+        showDialog(
           context: context,
           builder: (_) => SimpleDialog(
-            title: Text('Send to:'),
-          ),
-        );
-        // AlertDialog(
-        //       title: const Text('AlertDialog Title'),
-        //       content: const Text('AlertDialog description'),
-        //       actions: <Widget>[
-        //         TextButton(
-        //           onPressed: () => Navigator.pop(context, 'Cancel'),
-        //           child: const Text('Cancel'),
-        //         ),
-        //         TextButton(
-        //           onPressed: () => Navigator.pop(context, 'OK'),
-        //           child: const Text('OK'),
-        //         ),
-        //       ],
-        //     ));
+          title: Text('Send to a Friend'),
+          children: <Widget>[UserInformation(id, goal)],
+            ),
+          );
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -91,5 +83,69 @@ class ChallengeCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+class UserInformation extends StatefulWidget {
+  final String id;
+  final int goal;
+  const UserInformation(this.id,this.goal);
+
+  @override
+  _UserInformationState createState() => _UserInformationState();
+}
+
+class _UserInformationState extends State<UserInformation> {
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection('users').snapshots();
+    
+    CollectionReference userChallenges =
+        FirebaseFirestore.instance.collection('userChallenges');
+    
+
+  @override
+  Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final String? userEmail = auth.currentUser?.email;
+    return SizedBox(
+            height: 200,
+            width: 200,
+            child: StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+
+        return ListView(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            print(data['name']);
+            return SimpleDialogOption(
+              onPressed: () {
+                 Queries.addUserChallenge(
+                    userChallenges,
+                    widget.id,
+                    widget.goal,
+                    data['email'],
+                    userEmail,
+                    );
+                  Navigator.pop(context, data['name']);
+
+              },
+              child: Text(data['email'] == userEmail ? "" : data['name']),
+            );
+          }).toList(),
+        );
+      },
+    ));
   }
 }
