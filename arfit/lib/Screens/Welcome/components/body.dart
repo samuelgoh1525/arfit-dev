@@ -21,7 +21,7 @@ class Body extends StatelessWidget {
         children: <Widget>[
           SizedBox(width: double.infinity),
           Text(
-            "JOIN THE FITNESS MOVEMENT",
+            "JOIN THE FITNESS MOVEMENT!",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
