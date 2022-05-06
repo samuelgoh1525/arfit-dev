@@ -33,7 +33,7 @@ class ChallengeCard extends StatelessWidget {
           context: context,
           builder: (_) => SimpleDialog(
             title: Text('Send to a Friend'),
-            children: <Widget>[UserInformation(id, goal, length)],
+            children: <Widget>[UserInformation(id, goal, length, name)],
           ),
         );
       },
@@ -90,7 +90,8 @@ class UserInformation extends StatefulWidget {
   final String id;
   final int goal;
   final int length;
-  const UserInformation(this.id, this.goal, this.length);
+  final String name;
+  const UserInformation(this.id, this.goal, this.length, this.name);
 
   @override
   _UserInformationState createState() => _UserInformationState();
@@ -143,6 +144,7 @@ class _UserInformationState extends State<UserInformation> {
                       widget.length,
                       data['email'],
                       userEmail,
+                      widget.name,
                     );
                     Navigator.pop(context, data['name']);
                   },

@@ -38,6 +38,7 @@ class Queries {
     int length,
     String receiver,
     String? sender,
+    String name,
   ) {
     return userChallenges
         .add({
@@ -50,6 +51,7 @@ class Queries {
           'accepted': false,
           'duedate':
               Timestamp.fromDate(DateTime.now().add(Duration(days: length))),
+          'challengeName': name,
         })
         .then((docRef) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));

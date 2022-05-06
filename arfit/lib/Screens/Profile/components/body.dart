@@ -62,8 +62,8 @@ class _BodyState extends State<Body> {
                           context: context,
                           builder: (_) => AlertDialog(
                                   title: Text("You have been challenged by " +
-                                      data['sender']),
-                                  content: Text("Do you accept?"),
+                                      data['sender'].split('@')[0]),
+                                  content: Text(data['challengeName']),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -89,7 +89,12 @@ class _BodyState extends State<Body> {
                                         Navigator.pop(context);
                                         waitingForChallenge = true;
                                       },
-                                      child: Text("Reject"),
+                                      child: Text(
+                                        "Reject",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                        ),
+                                      ),
                                     ),
                                   ]));
                     });
