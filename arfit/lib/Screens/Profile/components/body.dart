@@ -5,7 +5,6 @@ import 'package:arfit/authentication_service.dart';
 import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/main.dart';
-import 'package:arfit/queries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
