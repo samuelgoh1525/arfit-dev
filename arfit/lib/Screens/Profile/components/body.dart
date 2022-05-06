@@ -91,6 +91,12 @@ class Body extends StatelessWidget {
           FutureBuilder(
             future: getName(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
+              if (snapshot.data == null) {
+                return Text('Something went wrong');
+              }
               if (!snapshot.hasData) {
                 return Column(
                   children: [
