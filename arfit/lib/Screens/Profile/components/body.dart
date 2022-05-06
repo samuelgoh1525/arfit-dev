@@ -58,9 +58,9 @@ class Body extends StatelessWidget {
                           TextButton(
                             onPressed: () {
                               Queries.acceptUserChallenge(
-                                  userChallenges, data['userChallengeId']);
+                                  userChallenges, document.id);
                               Queries.addAcceptedChallenge(
-                                  users, data['challengeId'], userEmail!);
+                                  users, document.id, userEmail!);
                             },
                             child: Text("Accept"),
                           ),
@@ -71,19 +71,14 @@ class Body extends StatelessWidget {
                         ]),
                   );
                 }
-                return ListTile(
-                  title: Text(data['full_name']),
-                  subtitle: Text(data['company']),
-                );
               });
-
               return ListView(
                 children: snapshot.data!.docs.map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   return ListTile(
-                    title: Text(data['full_name']),
-                    subtitle: Text(data['company']),
+                    title: Text(data['receiver']),
+                    subtitle: Text(data['challengeId']),
                   );
                 }).toList(),
               );

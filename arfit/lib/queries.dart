@@ -19,32 +19,30 @@ class Queries {
 
   static addUserChallenge(
       CollectionReference userChallenges,
-      String userChallengeId,
       String challengeId,
       int goal,
-      int reps,
-      String friend,
-      bool sent) {
+      String receiver,
+      String sender) {
     // Call the user's CollectionReference to add a new user
     return userChallenges
-        .doc(userChallengeId)
-        .set({
+        .add({
           'challengeId': challengeId,
           'goal': goal,
-          'reps': reps,
-          'friend': friend,
-          'sent': sent,
+          'repsr': 0,
+          'repss': 0,
+          'friend': receiver,
+          'sender': sender,
           'accepted': false,
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-  static addAcceptedChallenge(CollectionReference users, String challengeId, String email) {
+  static addAcceptedChallenge(CollectionReference users, String userChallengeId, String email) {
     // Call the user's CollectionReference to add a new user
     return users
       .doc(email)
       .update({
-        'acceptedChallenges': FieldValue.arrayUnion([challengeId])
+        'acceptedChallenges': FieldValue.arrayUnion([userChallengeId])
       })
       .then((value) => print("User Added"))
       .catchError((error) => print("Failed to add user: $error"));
