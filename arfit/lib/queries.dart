@@ -61,7 +61,7 @@ class Queries {
       .catchError((error) => print("Failed to add user: $error"));
   }
 
-  
+
   static updateReps(CollectionReference userChallenges, String userChallengeID, int reps) {
     // Call the user's CollectionReference to add a new user
     return userChallenges
@@ -72,4 +72,6 @@ class Queries {
       .then((value) => print("User Added"))
       .catchError((error) => print("Failed to add user: $error"));
   }
+
+  
 }
