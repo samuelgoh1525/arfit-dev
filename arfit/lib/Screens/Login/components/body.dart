@@ -28,13 +28,13 @@ class Body extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Text(
-            //   "LOGIN",
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     fontSize: 24,
-            //   ),
-            // ),
+            Text(
+              "LOGIN",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
             SizedBox(
               height: size.height * 0.03,
             ),
