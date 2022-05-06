@@ -23,8 +23,6 @@ class Body extends StatelessWidget {
 
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
-    // users.doc(documentId).get();
-
     return Background(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
