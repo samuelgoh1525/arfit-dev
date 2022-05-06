@@ -14,6 +14,8 @@ class Queries {
         .set({
           'name': username,
           'acceptedChallenges': [],
+          'email': email,
+          'photo': "https://cdn-icons-png.flaticon.com/512/64/64572.png",
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
