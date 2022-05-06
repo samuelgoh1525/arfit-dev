@@ -4,10 +4,12 @@ class Queries {
   // FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // CollectionReference users = FirebaseFirestore.instance.collection('users');
-  static addUser(CollectionReference users, String username, String email) {
-    // Call the user's CollectionReference to add a new user
+  static addUser(
+    CollectionReference users,
+    String username,
+    String email,
+  ) {
     return users
-
         .doc(email)
         .set({
           'name': username,
@@ -18,58 +20,59 @@ class Queries {
   }
 
   static addUserChallenge(
-      CollectionReference userChallenges,
-      String challengeId,
-      int goal,
-      String receiver,
-      String sender) {
-    // Call the user's CollectionReference to add a new user
+    CollectionReference userChallenges,
+    String userChallengeId,
+    String challengeId,
+    int goal,
+    int repsR,
+    int repsS,
+    String receiver,
+    String sender,
+    bool accepted,
+  ) {
     return userChallenges
-        .add({
+        .doc(userChallengeId)
+        .set({
           'challengeId': challengeId,
           'goal': goal,
-          'repsr': 0,
-          'repss': 0,
-          'friend': receiver,
+          'repsR': repsR,
+          'repsS': repsS,
+          'receiver': receiver,
           'sender': sender,
           'accepted': false,
         })
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-  static addAcceptedChallenge(CollectionReference users, String userChallengeId, String email) {
-    // Call the user's CollectionReference to add a new user
+
+  static addAcceptedChallenge(
+      CollectionReference users, String challengeId, String email) {
     return users
-      .doc(email)
-      .update({
-        'acceptedChallenges': FieldValue.arrayUnion([userChallengeId])
-      })
-      .then((value) => print("User Added"))
-      .catchError((error) => print("Failed to add user: $error"));
+        .doc(email)
+        .update({
+          'acceptedChallenges': FieldValue.arrayUnion([challengeId])
+        })
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
-  
-  static acceptUserChallenge(CollectionReference userChallenges, String userChallengeID) {
+
+  static acceptUserChallenge(
+      CollectionReference userChallenges, String userChallengeID) {
     // Call the user's CollectionReference to add a new user
     return userChallenges
-      .doc(userChallengeID)
-      .update({
-        'accepted': true
-      })
-      .then((value) => print("User Added"))
-      .catchError((error) => print("Failed to add user: $error"));
+        .doc(userChallengeID)
+        .update({'accepted': true})
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
 
-
-  static updateReps(CollectionReference userChallenges, String userChallengeID, int reps) {
+  static updateReps(
+      CollectionReference userChallenges, String userChallengeID, int reps) {
     // Call the user's CollectionReference to add a new user
     return userChallenges
-      .doc(userChallengeID)
-      .update({
-        'reps': reps
-      })
-      .then((value) => print("User Added"))
-      .catchError((error) => print("Failed to add user: $error"));
+        .doc(userChallengeID)
+        .update({'reps': reps})
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
   }
-
-  
 }

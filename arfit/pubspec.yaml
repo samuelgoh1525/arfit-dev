@@ -42,6 +42,7 @@ dependencies:
   firebase_messaging: ^11.3.0
   flutter_local_notifications: ^9.5.1
   firebase_analytics: ^9.1.7
+  firebase_analytics_web: ^0.4.0+12
   
 
 dev_dependencies:
