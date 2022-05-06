@@ -12,13 +12,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
   @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Total height and width of screen
-
+    bool waitingForChallenge = true;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -48,8 +53,11 @@ class Body extends StatelessWidget {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
                   if (data['receiver'] == userEmail &&
-                      data['accepted'] == false) {
+                      data['accepted'] == false &&
+                      waitingForChallenge) {
+                    waitingForChallenge = false;
                     Future.delayed(Duration.zero, () {
+                      waitingForChallenge = false;
                       showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
@@ -63,11 +71,13 @@ class Body extends StatelessWidget {
                                             userChallenges, document.id);
                                         Queries.addAcceptedChallenge(users,
                                             data['challengeID'], userEmail!);
-                                        Navigator.pop(context);
                                         Queries.addAcceptedChallenge(
                                             users,
                                             data['challengeID'],
                                             data['sender']);
+                                        waitingForChallenge = true;
+
+                                        Navigator.pop(context);
                                       },
                                       child: Text("Accept"),
                                     ),
@@ -77,6 +87,7 @@ class Body extends StatelessWidget {
                                         Queries.acceptUserChallenge(
                                             userChallenges, document.id);
                                         Navigator.pop(context);
+                                        waitingForChallenge = true;
                                       },
                                       child: Text("Reject"),
                                     ),
