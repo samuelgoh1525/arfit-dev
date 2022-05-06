@@ -12,6 +12,7 @@ class Queries {
     return users
         .doc(email)
         .set({
+          'email':email,
           'name': username,
           'acceptedChallenges': [],
         })
