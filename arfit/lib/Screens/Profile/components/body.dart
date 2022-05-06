@@ -84,7 +84,7 @@ class Body extends StatelessWidget {
                     });
                   }
                 }
-                return Text("No challenges found");
+                return Text("");
               }),
 
           SizedBox(width: double.infinity),
