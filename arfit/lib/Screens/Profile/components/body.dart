@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:arfit/Screens/Profile/components/background.dart';
+//import 'package:arfit/Screens/PopUpScreens/send_to.dart' show SendTo;
 import 'package:arfit/authentication_service.dart';
 import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/rounded_button.dart';
@@ -21,7 +22,7 @@ class Body extends StatelessWidget {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
 
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    //CollectionReference users = FirebaseFirestore.instance.collection('users');
 
     // users.doc(documentId).get();
 
@@ -66,28 +67,85 @@ class Body extends StatelessWidget {
             press: () {
               showDialog(
                 context: context,
-                builder: (_) => AlertWidget(
-                    title: "Testing New Alert",
-                    caption: "Does this work?",
-                    actions: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text("Accept"),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text("Reject"),
-                      ),
-                    ]),
+                builder: (_) => SimpleDialog(
+                title: Text('Send to a Friend'),
+                children: [UserInformation()],
+              ),
               );
             },
+          
           ),
-          // AlertDialog(
-          //   title: Text("Accept?"),
-          //   content: Text("Do you accept?"),
-          // ),
+
         ],
       ),
+    );
+  }
+}
+
+
+/*class SimpleDialogItem extends StatelessWidget {
+  const SimpleDialogItem({Key? key})
+      : super(key: key);
+
+ 
+  List<String> text = UserInformation();
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> name_Options = [];
+    for (String name in text){
+      name_Options.add(SimpleDialogOption(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: 16.0),
+            child: Text(name),
+          ),
+        ],
+      ),
+    );
+    );
+    }
+    return name_Options;
+  }
+}*/
+
+class UserInformation extends StatefulWidget {
+  @override
+    _UserInformationState createState() => _UserInformationState();
+}
+
+class _UserInformationState extends State<UserInformation> {
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').snapshots();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _usersStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Text('Something went wrong');
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading");
+        }
+
+        return ListView(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+           print(data['name']);
+            return ListTile(
+              title: Text(data['name']),
+             
+            );
+          }).toList(),
+        );
+      },
     );
   }
 }
