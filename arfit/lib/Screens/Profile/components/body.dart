@@ -4,13 +4,11 @@ import 'package:arfit/Screens/ActiveChallenges/active_challenges.dart';
 import 'package:arfit/Screens/BrowseChallenges/browse_challenges.dart';
 import 'package:arfit/Screens/Profile/components/background.dart';
 import 'package:arfit/authentication_service.dart';
-import 'package:arfit/components/alert_widget.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 class Body extends StatelessWidget {
@@ -19,9 +17,6 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size; // Total height and width of screen
-
-    CollectionReference userChallenges =
-        FirebaseFirestore.instance.collection('userChallenges');
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
@@ -67,8 +62,23 @@ class Body extends StatelessWidget {
             future: getName(),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
+                return Column(
+                  children: [
+                    Text(
+                      "Hi " + snapshot.data['name'] + "!",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.04,
+                    ),
+                    Image.network(
+                      "https://cdn-icons-png.flaticon.com/512/64/64572.png",
+                      height: size.height * 0.2,
+                    )
+                  ],
                 );
               } else {
                 return Column(
