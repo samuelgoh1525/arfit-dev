@@ -21,22 +21,17 @@ class Queries {
 
   static addUserChallenge(
     CollectionReference userChallenges,
-    String userChallengeId,
     String challengeId,
     int goal,
-    int repsR,
-    int repsS,
     String receiver,
     String sender,
-    bool accepted,
   ) {
     return userChallenges
-        .doc(userChallengeId)
-        .set({
+        .add({
           'challengeId': challengeId,
           'goal': goal,
-          'repsR': repsR,
-          'repsS': repsS,
+          'repsR': 0,
+          'repsS': 0,
           'receiver': receiver,
           'sender': sender,
           'accepted': false,
