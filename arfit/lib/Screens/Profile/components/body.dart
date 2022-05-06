@@ -6,6 +6,7 @@ import 'package:arfit/Screens/Profile/components/background.dart';
 import 'package:arfit/authentication_service.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:arfit/main.dart';
+import 'package:arfit/queries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,10 @@ class Body extends StatelessWidget {
 
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
-
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference userChallenges =
+        FirebaseFirestore.instance.collection('userChallenges');
     Future<Map> getName() async {
-      CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
       DocumentSnapshot userDocument = await users.doc(userEmail).get();
       return userDocument.data() as Map;
     }
@@ -32,31 +33,55 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // StreamBuilder<QuerySnapshot>(
-          //   stream: userChallenges.snapshots(),
-          //   builder:
-          //       (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          //     if (snapshot.hasError) {
-          //       return Text('Something went wrong');
-          //     }
+          StreamBuilder<QuerySnapshot>(
+              stream: userChallenges.snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Something went wrong');
+                }
 
-          //     if (snapshot.connectionState == ConnectionState.waiting) {
-          //       return Text("Loading");
-          //     }
-          //     return ListView(
-          //       scrollDirection: Axis.vertical,
-          //       shrinkWrap: true,
-          //       children: snapshot.data!.docs.map((DocumentSnapshot document) {
-          //         Map<String, dynamic> data =
-          //             document.data()! as Map<String, dynamic>;
-          //         return ListTile(
-          //           title: Text(data['receiver']),
-          //           subtitle: Text(data['challengeId']),
-          //         );
-          //       }).toList(),
-          //     );
-          //   },
-          // ),
+                for (DocumentSnapshot document in snapshot.data!.docs) {
+                  Map<String, dynamic> data =
+                      document.data()! as Map<String, dynamic>;
+                  if (data['receiver'] == userEmail &&
+                      data['accepted'] == false) {
+                    Future.delayed(Duration.zero, () {
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                                  title: Text("You have been challenged by " +
+                                      data['sender']),
+                                  content: Text("Do you accept?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Queries.acceptUserChallenge(
+                                            userChallenges, document.id);
+                                        Queries.addAcceptedChallenge(
+                                            users, document.id, userEmail!);
+                                        Navigator.pop(context);
+                                        Queries.addAcceptedChallenge(
+                                            users, document.id, data['sender']);
+                                      },
+                                      child: Text("Accept"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        // Queries.removeUserChallenge(userChallenges, document.id);
+                                        Queries.acceptUserChallenge(
+                                            userChallenges, document.id);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Reject"),
+                                    ),
+                                  ]));
+                    });
+                  }
+                }
+                return Text("No challenges found");
+              }),
+
           SizedBox(width: double.infinity),
           FutureBuilder(
             future: getName(),
