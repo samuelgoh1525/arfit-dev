@@ -22,7 +22,7 @@ class Body extends StatelessWidget {
         children: <Widget>[
           SizedBox(width: double.infinity),
           Text(
-            "PROFILE PAGE",
+            "WELCOME!",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
