@@ -32,58 +32,31 @@ class Body extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          StreamBuilder<QuerySnapshot>(
-            stream: userChallenges.snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
+          // StreamBuilder<QuerySnapshot>(
+          //   stream: userChallenges.snapshots(),
+          //   builder:
+          //       (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //     if (snapshot.hasError) {
+          //       return Text('Something went wrong');
+          //     }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
-              }
-              // snapshot.data!.docs.map((DocumentSnapshot document) {
-              //   Map<String, dynamic> data =
-              //       document.data()! as Map<String, dynamic>;
-              //   if (data['receiver'] == userEmail) {
-              //     showDialog(
-              //       context: context,
-              //       builder: (_) => AlertWidget(
-              //           title: "You have been challenged by " + data['sender'],
-              //           caption: "Do you accept?",
-              //           actions: [
-              //             TextButton(
-              //               onPressed: () {
-              //                 Queries.acceptUserChallenge(
-              //                     userChallenges, document.id);
-              //                 Queries.addAcceptedChallenge(
-              //                     users, document.id, userEmail!);
-              //               },
-              //               child: Text("Accept"),
-              //             ),
-              //             TextButton(
-              //               onPressed: () {},
-              //               child: Text("Reject"),
-              //             ),
-              //           ]),
-              //     );
-              //   }
-              // });
-              return ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: snapshot.data!.docs.map((DocumentSnapshot document) {
-                  Map<String, dynamic> data =
-                      document.data()! as Map<String, dynamic>;
-                  return ListTile(
-                    title: Text(data['receiver']),
-                    subtitle: Text(data['challengeId']),
-                  );
-                }).toList(),
-              );
-            },
-          ),
+          //     if (snapshot.connectionState == ConnectionState.waiting) {
+          //       return Text("Loading");
+          //     }
+          //     return ListView(
+          //       scrollDirection: Axis.vertical,
+          //       shrinkWrap: true,
+          //       children: snapshot.data!.docs.map((DocumentSnapshot document) {
+          //         Map<String, dynamic> data =
+          //             document.data()! as Map<String, dynamic>;
+          //         return ListTile(
+          //           title: Text(data['receiver']),
+          //           subtitle: Text(data['challengeId']),
+          //         );
+          //       }).toList(),
+          //     );
+          //   },
+          // ),
           SizedBox(width: double.infinity),
           Text(
             "WELCOME!",
@@ -140,27 +113,27 @@ class Body extends StatelessWidget {
               );
             },
           ),
-          RoundedButton(
-            text: "Try this",
-            press: () {
-              showDialog(
-                context: context,
-                builder: (_) => AlertWidget(
-                    title: "Testing New Alert",
-                    caption: "Does this work?",
-                    actions: [
-                      TextButton(
-                        onPressed: () {},
-                        child: Text("Accept"),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Text("Reject"),
-                      ),
-                    ]),
-              );
-            },
-          ),
+          // RoundedButton(
+          //   text: "Try this",
+          //   press: () {
+          //     showDialog(
+          //       context: context,
+          //       builder: (_) => AlertWidget(
+          //           title: "Testing New Alert",
+          //           caption: "Does this work?",
+          //           actions: [
+          //             TextButton(
+          //               onPressed: () {},
+          //               child: Text("Accept"),
+          //             ),
+          //             TextButton(
+          //               onPressed: () {},
+          //               child: Text("Reject"),
+          //             ),
+          //           ]),
+          //     );
+          //   },
+          // ),
           // AlertDialog(
           //   title: Text("Accept?"),
           //   content: Text("Do you accept?"),
