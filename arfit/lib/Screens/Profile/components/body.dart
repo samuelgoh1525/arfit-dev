@@ -26,7 +26,12 @@ class Body extends StatelessWidget {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
 
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    Future<Map> getName() async {
+      CollectionReference users =
+          FirebaseFirestore.instance.collection('users');
+      DocumentSnapshot userDocument = await users.doc(userEmail).get();
+      return userDocument.data() as Map;
+    }
 
     return Background(
       child: Column(
@@ -58,23 +63,49 @@ class Body extends StatelessWidget {
           //   },
           // ),
           SizedBox(width: double.infinity),
-          Text(
-            "WELCOME!",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
+          FutureBuilder(
+            future: getName(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return Column(
+                  children: [
+                    Text(
+                      "Hi " + snapshot.data['name'] + "!",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.04,
+                    ),
+                    Image.network(
+                      snapshot.data['photo'],
+                      height: size.height * 0.2,
+                    )
+                  ],
+                );
+              }
+            },
+            // child: Text(
+            //   "WELCOME!",
+            //   style: TextStyle(
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 24,
+            //   ),
+            // ),
           ),
           SizedBox(
             height: size.height * 0.04,
           ),
-          SvgPicture.asset(
-            "assets/icons/signup-fitness.svg",
-            height: size.height * 0.4,
-          ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
+          // SvgPicture.asset(
+          //   "assets/icons/signup-fitness.svg",
+          //   height: size.height * 0.4,
+          // ),
           RoundedButton(
             text: "BROWSE CHALLENGES",
             press: () {
@@ -84,9 +115,6 @@ class Body extends StatelessWidget {
                       builder: (context) => const BrowseChallenges()));
             },
           ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
           RoundedButton(
             text: "ACTIVE CHALLENGES",
             press: () {
@@ -95,10 +123,11 @@ class Body extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => const ActiveChallenges()));
             },
+            color: Colors.green,
           ),
-          SizedBox(
-            height: size.height * 0.01,
-          ),
+          // SizedBox(
+          //   height: size.height * 0.01,
+          // ),
           RoundedButton(
             text: "SIGN OUT",
             press: () {
@@ -112,6 +141,7 @@ class Body extends StatelessWidget {
                 ),
               );
             },
+            color: Colors.red,
           ),
           // RoundedButton(
           //   text: "Try this",
