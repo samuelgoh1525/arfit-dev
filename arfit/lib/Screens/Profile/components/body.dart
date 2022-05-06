@@ -5,6 +5,7 @@ import 'package:arfit/Screens/BrowseChallenges/browse_challenges.dart';
 import 'package:arfit/Screens/Profile/components/background.dart';
 import 'package:arfit/authentication_service.dart';
 import 'package:arfit/components/rounded_button.dart';
+import 'package:arfit/constants.dart';
 import 'package:arfit/main.dart';
 import 'package:arfit/queries.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,8 +62,13 @@ class _BodyState extends State<Body> {
                       showDialog(
                           context: context,
                           builder: (_) => AlertDialog(
-                                  title: Text("You have been challenged by " +
-                                      data['sender'].split('@')[0]),
+                                  title: Text(
+                                    "You have been challenged by @" +
+                                        data['sender'].split('@')[0],
+                                    style: TextStyle(
+                                      color: kPrimaryColor,
+                                    ),
+                                  ),
                                   content: Text(data['challengeName']),
                                   actions: [
                                     TextButton(

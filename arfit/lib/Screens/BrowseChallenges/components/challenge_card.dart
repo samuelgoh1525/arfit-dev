@@ -148,7 +148,10 @@ class _UserInformationState extends State<UserInformation> {
                     );
                     Navigator.pop(context, data['name']);
                   },
-                  child: Text(data['email'] == userEmail ? "" : data['name']),
+                  child: Text(
+                    data['email'] == userEmail ? "" : "@" + data['name'],
+                    style: TextStyle(color: kPrimaryColor),
+                  ),
                 );
               }).toList(),
             );
