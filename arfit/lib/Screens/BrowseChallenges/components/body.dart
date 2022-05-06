@@ -66,6 +66,7 @@ class Body extends StatelessWidget {
                         length: snapshot.data![index]['length'],
                         description: snapshot.data![index]['description'],
                         photo: snapshot.data![index]['photo'],
+                        goal: snapshot.data![index]['goal'],
                       );
                     },
                   );

@@ -35,7 +35,7 @@ class Queries {
     String challengeId,
     int goal,
     String receiver,
-    String sender,
+    String? sender,
   ) {
     return userChallenges
         .add({
