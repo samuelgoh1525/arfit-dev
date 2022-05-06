@@ -68,20 +68,17 @@ class Body extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (_) => SimpleDialog(
-                title: Text('Send to a Friend'),
-                children: [UserInformation()],
-              ),
+                  title: Text('Send to a Friend'),
+                  children: <Widget>[UserInformation()],
+                ),
               );
             },
-          
           ),
-
         ],
       ),
     );
   }
 }
-
 
 /*class SimpleDialogItem extends StatelessWidget {
   const SimpleDialogItem({Key? key})
@@ -114,15 +111,19 @@ class Body extends StatelessWidget {
 
 class UserInformation extends StatefulWidget {
   @override
-    _UserInformationState createState() => _UserInformationState();
+  _UserInformationState createState() => _UserInformationState();
 }
 
 class _UserInformationState extends State<UserInformation> {
-  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance.collection('users').snapshots();
+  final Stream<QuerySnapshot> _usersStream =
+      FirebaseFirestore.instance.collection('users').snapshots();
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return SizedBox(
+            height: 200,
+            width: 200,
+            child: StreamBuilder<QuerySnapshot>(
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -137,15 +138,15 @@ class _UserInformationState extends State<UserInformation> {
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
-          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-           print(data['name']);
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+            print(data['name']);
             return ListTile(
               title: Text(data['name']),
-             
             );
           }).toList(),
         );
       },
-    );
+    ));
   }
 }
