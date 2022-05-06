@@ -12,7 +12,7 @@ class Queries {
     return users
         .doc(email)
         .set({
-          'email':email,
+          'email': email,
           'name': username,
           'acceptedChallenges': [],
           'email': email,
@@ -23,11 +23,10 @@ class Queries {
   }
 
   static removeUserChallenge(
-    CollectionReference userChallenges,
-    String userChallengeID
-  ) {
+      CollectionReference userChallenges, String userChallengeID) {
     return userChallenges
-        .doc(userChallengeID).delete()
+        .doc(userChallengeID)
+        .delete()
         .then((value) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
@@ -36,20 +35,23 @@ class Queries {
     CollectionReference userChallenges,
     String challengeId,
     int goal,
+    int length,
     String receiver,
-    String sender,
+    String? sender,
   ) {
     return userChallenges
         .add({
-          'challengeId': challengeId,
+          'challengeID': challengeId,
           'goal': goal,
-          'repsR': 0,
-          'repsS': 0,
+          'repsr': 0,
+          'repss': 0,
           'receiver': receiver,
           'sender': sender,
           'accepted': false,
+          'duedate':
+              Timestamp.fromDate(DateTime.now().add(Duration(days: length))),
         })
-        .then((value) => print("User Added"))
+        .then((docRef) => print("User Added"))
         .catchError((error) => print("Failed to add user: $error"));
   }
 
