@@ -62,7 +62,9 @@ class Body extends StatelessWidget {
                           child: Text("Accept"),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // Queries.removeUserChallenge(userChallenges, document.id);
+                            },
                           child: Text("Reject"),
                         ),
                       ]);

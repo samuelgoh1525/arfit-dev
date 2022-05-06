@@ -19,6 +19,16 @@ class Queries {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
+  static removeUserChallenge(
+    CollectionReference userChallenges,
+    String userChallengeID
+  ) {
+    return userChallenges
+        .doc(userChallengeID).delete()
+        .then((value) => print("User Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
+
   static addUserChallenge(
     CollectionReference userChallenges,
     String challengeId,
