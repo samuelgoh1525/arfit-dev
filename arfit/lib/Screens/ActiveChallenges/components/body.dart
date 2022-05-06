@@ -2,6 +2,7 @@
 
 import 'package:arfit/Screens/ActiveChallenges/components/challenge_card.dart';
 import 'package:arfit/Screens/Profile/components/background.dart';
+import 'package:arfit/Screens/Profile/profile_screen.dart';
 import 'package:arfit/components/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -164,7 +165,8 @@ class Body extends StatelessWidget {
           RoundedButton(
             text: "BACK",
             press: () {
-              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const ProfileScreen()));
             },
           ),
         ],

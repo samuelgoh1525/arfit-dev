@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:arfit/Screens/ActiveChallenges/active_challenges.dart';
 import 'package:arfit/components/rounded_input_field.dart';
 import 'package:arfit/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -93,8 +94,14 @@ class ChallengeCard extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   updateReps(repsController.text.trim())
-                      .then((value) => Navigator.pop(context))
-                      .catchError((onError) => Navigator.pop(context));
+                      .then((value) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ActiveChallenges())))
+                      .catchError((onError) => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const ActiveChallenges())));
                 },
                 child: Text('Done!'),
               )
