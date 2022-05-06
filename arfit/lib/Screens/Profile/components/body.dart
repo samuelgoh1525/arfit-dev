@@ -43,31 +43,36 @@ class Body extends StatelessWidget {
                 return Text("Loading");
               }
 
-              // Map<String, dynamic> data = snapshot.data!.docs as Map<String, dynamic>;
               for (DocumentSnapshot document in snapshot.data!.docs) {
                 Map<String, dynamic> data =
                     document.data()! as Map<String, dynamic>;
-                if (data['receiver'] == userEmail && data['accepted'] == false) {
-                  return AlertWidget(
-                      title: "You have been challenged by " + data['sender'],
-                      caption: "Do you accept?",
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Queries.acceptUserChallenge(
-                                userChallenges, document.id);
-                            Queries.addAcceptedChallenge(
-                                users, document.id, userEmail!);
-                          },
-                          child: Text("Accept"),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            // Queries.removeUserChallenge(userChallenges, document.id);
-                            },
-                          child: Text("Reject"),
-                        ),
-                      ]);
+                if (data['receiver'] == userEmail &&
+                    data['accepted'] == false) {
+                  Future.delayed(Duration.zero, () {
+                    showDialog(
+                        context: context,
+                        builder: (_) => AlertWidget(
+                                title: "You have been challenged by " +
+                                    data['sender'],
+                                caption: "Do you accept?",
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Queries.acceptUserChallenge(
+                                          userChallenges, document.id);
+                                      Queries.addAcceptedChallenge(
+                                          users, document.id, userEmail!);
+                                    },
+                                    child: Text("Accept"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      // Queries.removeUserChallenge(userChallenges, document.id);
+                                    },
+                                    child: Text("Reject"),
+                                  ),
+                                ]));
+                  });
                 }
               }
               return Text("No new challenges");
