@@ -21,7 +21,10 @@ class Body extends StatelessWidget {
     CollectionReference challenges =
         FirebaseFirestore.instance.collection('challenges');
 
+    print(userDocument['acceptedChallenges']);
     List allChallengesDetails = [];
+
+    // [gKlkdOha5qzNTllV3gHd, dAHoKHOhUvLEUU8syGHD, d5LfRtV4SdZBmGFGcN3L]
 
     for (String oneChallenge in userDocument['acceptedChallenges']) {
       QuerySnapshot userChallengeSenderQuerySnapshot = await userChallenges
@@ -55,7 +58,7 @@ class Body extends StatelessWidget {
         challengeDocument['duedate'] =
             userChallengeSenderDocument['duedate'].toDate();
         challengeDocument['userchallengeid'] =
-            userChallengeSenderDocument['id'];
+            userChallengeSenderDocumentSnapshot.id;
 
         allChallengesDetails.add(challengeDocument);
       }
@@ -79,7 +82,7 @@ class Body extends StatelessWidget {
         challengeDocument['duedate'] =
             userChallengeReceiverDocument['duedate'].toDate();
         challengeDocument['userchallengeid'] =
-            userChallengeReceiverDocument['id'];
+            userChallengeReceiverDocumentSnapshot.id;
 
         allChallengesDetails.add(challengeDocument);
       }

@@ -32,10 +32,10 @@ class ChallengeCard extends StatelessWidget {
         showDialog(
           context: context,
           builder: (_) => SimpleDialog(
-          title: Text('Send to a Friend'),
-          children: <Widget>[UserInformation(id, goal)],
-            ),
-          );
+            title: Text('Send to a Friend'),
+            children: <Widget>[UserInformation(id, goal, length)],
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -86,11 +86,11 @@ class ChallengeCard extends StatelessWidget {
   }
 }
 
-
 class UserInformation extends StatefulWidget {
   final String id;
   final int goal;
-  const UserInformation(this.id,this.goal);
+  final int length;
+  const UserInformation(this.id, this.goal, this.length);
 
   @override
   _UserInformationState createState() => _UserInformationState();
@@ -99,53 +99,53 @@ class UserInformation extends StatefulWidget {
 class _UserInformationState extends State<UserInformation> {
   final Stream<QuerySnapshot> _usersStream =
       FirebaseFirestore.instance.collection('users').snapshots();
-    
-    CollectionReference userChallenges =
-        FirebaseFirestore.instance.collection('userChallenges');
-    
+
+  CollectionReference userChallenges =
+      FirebaseFirestore.instance.collection('userChallenges');
 
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final String? userEmail = auth.currentUser?.email;
     return SizedBox(
-            height: 200,
-            width: 200,
-            child: StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Text('Something went wrong');
-        }
+        height: 200,
+        width: 200,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _usersStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading");
-        }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
 
-        return ListView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            print(data['name']);
-            return SimpleDialogOption(
-              onPressed: () {
-                 Queries.addUserChallenge(
-                    userChallenges,
-                    widget.id,
-                    widget.goal,
-                    data['email'],
-                    userEmail,
+            return ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
+                print(data['name']);
+                return SimpleDialogOption(
+                  onPressed: () {
+                    Queries.addUserChallenge(
+                      userChallenges,
+                      widget.id,
+                      widget.goal,
+                      widget.length,
+                      data['email'],
+                      userEmail,
                     );
-                  Navigator.pop(context, data['name']);
-
-              },
-              child: Text(data['email'] == userEmail ? "" : data['name']),
+                    Navigator.pop(context, data['name']);
+                  },
+                  child: Text(data['email'] == userEmail ? "" : data['name']),
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
-      },
-    ));
+          },
+        ));
   }
 }

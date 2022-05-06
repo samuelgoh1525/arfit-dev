@@ -40,6 +40,9 @@ class Body extends StatelessWidget {
                 if (snapshot.hasError) {
                   return Text('Something went wrong');
                 }
+                if (snapshot.data == null) {
+                  return Text('Something went wrong');
+                }
 
                 for (DocumentSnapshot document in snapshot.data!.docs) {
                   Map<String, dynamic> data =
@@ -58,11 +61,13 @@ class Body extends StatelessWidget {
                                       onPressed: () {
                                         Queries.acceptUserChallenge(
                                             userChallenges, document.id);
-                                        Queries.addAcceptedChallenge(
-                                            users, document.id, userEmail!);
+                                        Queries.addAcceptedChallenge(users,
+                                            data['challengeID'], userEmail!);
                                         Navigator.pop(context);
                                         Queries.addAcceptedChallenge(
-                                            users, document.id, data['sender']);
+                                            users,
+                                            data['challengeID'],
+                                            data['sender']);
                                       },
                                       child: Text("Accept"),
                                     ),
@@ -119,7 +124,9 @@ class Body extends StatelessWidget {
                       height: size.height * 0.04,
                     ),
                     Image.network(
-                      snapshot.data['photo'],
+                      snapshot.data['photo'] != ""
+                          ? snapshot.data['photo']
+                          : "https://cdn-icons-png.flaticon.com/512/64/64572.png",
                       height: size.height * 0.2,
                     )
                   ],
