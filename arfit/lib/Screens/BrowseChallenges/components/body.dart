@@ -22,9 +22,9 @@ class Body extends StatelessWidget {
     Size size = MediaQuery.of(context).size; // Total height and width of screen
 
     // List challengeList = [];
-    getChallenges().then((list) {
-      print(list[0]);
-    });
+    // getChallenges().then((list) {
+    //   print(list[0]);
+    // });
 
     return Background(
       child: Column(

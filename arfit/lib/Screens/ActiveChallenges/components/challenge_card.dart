@@ -55,7 +55,7 @@ class ChallengeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeLeft = duedate.difference(DateTime.now()).inDays;
+    final timeLeft = duedate.difference(DateTime.now()).inDays + 1;
     final timeLeftPercent = 1 - timeLeft.toDouble() / length.toDouble();
     final progress = reps / goal;
 
